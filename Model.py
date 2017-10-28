@@ -3,44 +3,32 @@ Created on 18 October 2017
 @author Groep Zonder Naam
 '''
 
-class Model():
+class Model:
 
     # Make some Class variables
-    # Onder andere de maximale uitrol stand
-    # Dit is tevens en te plotten as
-    MAX_UITROL = 160
-    uitrol = 160
-    breedte = 0
+
+    max_unroll = 160
+    current_unroll = 160
+    width = 0
+
+    rollin = False
     status = ""
 
-    #========================================
-    # Constructor van de klasse model.
-    #========================================
-    #def __init__(self):
+    # ========================================
+    # Constructor of this class
+    # ========================================
+    def __init__(self):
+        pass
+
+    # ========================================
+    # Unroll
+    # ========================================
+    def unroll(self, buntton_status):
+        pass
 
 
-    # =======================================
-    # Rol het luik op.
-    # =======================================
-    def rol_op(self):
-        while self.uitrol > 0:
-            if self.uitrol > 0:
-                self.uitrol -= 1
-                self.status = "Wordt opgerold"
-                print(self.status+" / "+str(self.uitrol))
-            elif self.uitrol == 0:
-                self.status = "Is al opgerold"
-                print(self.status + " / " + str(self.uitrol))
-
-    # =======================================
-    # Constructor van de klasse model.
-    # =======================================
-    def rol_uit(self):
-        if self.uitrol <= self.uitrol:
-            self.uitrol += 1
-            self.status = "Wordt uitgerold"
-        elif self.uitrol == self.MAX_UITROL:
-            self.status = "Is al uitgerold"
-
-model = Model()
-model.rol_op()
+    # ========================================
+    # Roll up
+    # ========================================
+    def roll_up(self, button_status):
+        pass
