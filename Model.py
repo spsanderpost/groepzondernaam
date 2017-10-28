@@ -11,7 +11,8 @@ class Model:
     current_unroll = 160
     width = 0
 
-    rollin = False
+    rollin_down = False
+    rollin_up = False
     status = ""
 
     # ========================================
@@ -23,9 +24,8 @@ class Model:
     # ========================================
     # Unroll
     # ========================================
-    def unroll(self, buntton_status):
+    def unroll(self, button_status):
         pass
-
 
     # ========================================
     # Roll up
