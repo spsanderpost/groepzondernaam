@@ -8,16 +8,28 @@ import sys
 import tkinter as tk
 from tkinter import *
 
-
-class Mainview:
+class MainView:
 
     # ===========================
-    # The Constructor
+    # Constructor of the class
     # ===========================
     def __init__(self, model):
         self.model = model
         self.root = tk.Tk()
+
         self.root.winfo_toplevel().title("Zeng Terminal")
+        self.sunblindview = SunblindView(model, self.root)
+        #self.sunblindview1 = SunblindView(model, self.root)
+
+class SunblindView:
+
+    # ===========================
+    # The Constructor
+    # ===========================
+    def __init__(self, model, root):
+        self.model = model
+        self.root = root
+        self.return_frame = Frame(self.root)
         self.setup_board()
 
     # ===========================
@@ -38,14 +50,13 @@ class Mainview:
             self.model.rollin_up = False
             self.model.status = "Stopped rolling up"
 
-
         # Setup some frames to organize
-        space = LabelFrame()
-        main_frame = Frame(space)
+        space = Frame()
+        main_frame = Frame(self.return_frame)
         main_frame.pack(side=TOP)
-        control_frame = Frame(self.root)
+        control_frame = Frame(self.return_frame)
         control_frame.pack(side=RIGHT, fill=Y, expand=YES)
-        terminal_frame = Frame(self.root)
+        terminal_frame = Frame(self.return_frame)
         terminal_frame.pack(side=BOTTOM, fill=X, expand=YES)
         # Pack some space into the frame
         space.pack(fill=BOTH, expand=YES)
@@ -75,10 +86,9 @@ class Mainview:
         led_yellow_path = r"Images/Yellow.gif"
         led_red_path = r"Images/Red.gif"
 
-        led_green_image = PhotoImage(file=led_green_path).subsample(2)
-        led_yellow_image = PhotoImage(file=led_yellow_path).subsample(2)
-        led_red_image = PhotoImage(file=led_red_path).subsample(2)
-
+        led_green_image = PhotoImage(file=led_green_path).subsample(4)
+        led_yellow_image = PhotoImage(file=led_yellow_path).subsample(4)
+        led_red_image = PhotoImage(file=led_red_path).subsample(4)
 
         led_green = Label(main_frame, image=led_green_image)
         led_yellow = Label(main_frame, image=led_yellow_image)
@@ -90,7 +100,7 @@ class Mainview:
 
         def create_led():
             led_off_path = r"Images/Off.gif"
-            led_off_image = PhotoImage(file=led_off_path).subsample(3)
+            led_off_image = PhotoImage(file=led_off_path).subsample(4)
             led_off = Label(main_frame, image=led_off_image)
             led_off.image = led_off_image
             return led_off
@@ -99,9 +109,7 @@ class Mainview:
         # Bind Buttons to frame
         roll_up.pack()
         roll_down.pack()
-
         create_led().pack(side=LEFT)
         create_led().pack(side=LEFT)
         create_led().pack(side=LEFT)
-
         status_label.pack()

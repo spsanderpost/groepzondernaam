@@ -6,7 +6,7 @@
 # ===============================
 
 from Model import Model
-from Mainview import Mainview
+from View import MainView, SunblindView
 from threading import Thread
 
 class Application:
@@ -19,7 +19,7 @@ class Application:
     # Main window in a thread
     # =====================================
     def window_in_a_thread(self):
-        window = Mainview(self.model).root.mainloop()
+        window = MainView(self.model).root.mainloop()
 
     # =====================================
     # If main gets called start all threads
