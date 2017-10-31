@@ -1,34 +1,32 @@
-'''
-Created on 18 October 2017
-@author Groep Zonder Naam
-'''
+# Created on 31 October 2017
+# @author Sander Post
+
+# ===============================
+# First import al necessary files
+# ===============================
+
+from Sunblind import Sunblind
 
 class Model:
 
-    # Make some Class variables
+    sunblinds = []
 
-    max_unroll = 160
-    current_unroll = 160
-    width = 0
-
-    rollin_down = False
-    rollin_up = False
-    status = ""
-
-    # ========================================
-    # Constructor of this class
-    # ========================================
     def __init__(self):
         pass
 
-    # ========================================
-    # Unroll
-    # ========================================
-    def unroll(self, button_status):
-        pass
+    def create_sunblind(self, root):
 
-    # ========================================
-    # Roll up
-    # ========================================
-    def roll_up(self, button_status):
-        pass
+        if len(self.sunblinds) == 0:
+            id = 0
+        else: id = int(len(self.sunblinds))
+
+        sunblind = Sunblind(id=id, root=root)
+
+        self.sunblinds.append(sunblind)
+
+    def delete_sunblind(self):
+        current = self.sunblinds.pop()
+        current.delete_view()
+        current.lock_thread()
+        print(current)
+

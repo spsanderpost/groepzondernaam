@@ -6,28 +6,27 @@
 # ===============================
 
 from Model import Model
-from View import MainView, SunblindView
+from Sunblind import Sunblind
+from Mainview import MainView
+from Sunblindview import SunblindView
 from threading import Thread
+import tkinter as tk
 
-class Application:
+class Application():
     def __init__(self):
         pass
 
     model = Model()
+    view = MainView(model)
 
-    # =====================================
-    # Main window in a thread
-    # =====================================
-    def window_in_a_thread(self):
-        window = MainView(self.model).root.mainloop()
+    def test(self):
+        self.view.update()
 
     # =====================================
     # If main gets called start all threads
     # =====================================
     def main(self):
-        # t1 = Thread(target=, daemon=True)
-        # t1.start()
-        self.window_in_a_thread()
+        self.test()
 
 # ===============================
 # Try to make this app runnable
