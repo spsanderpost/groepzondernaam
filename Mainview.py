@@ -20,15 +20,15 @@ class MainView:
         self.root = tk.Tk()
         self.root.winfo_toplevel().title("Zeng Terminal")
         self.setup_buttons_left()
-        self.t = Thread(target=self.update, daemon=False)
-        self.t.start()
+        self.t1 = Thread(target=self.update, daemon=True)
+        self.t1.start()
 
     def update(self):
-        while True:
-            try:
-                self.root.update()
-            except:
-                pass
+        try:
+            self.root.deiconify()
+            self.root.mainloop()
+        except:
+            pass
 
     def setup_buttons_left(self):
         self.function_frame_left = Frame(self.root)
@@ -42,12 +42,12 @@ class MainView:
 
     def del_sunblind(self):
         self.model.delete_sunblind()
-        Tk.update(self.root)
+        #Tk.update(self.root)
 
     def add_sunblind_button(self):
         button = Button(self.function_frame_left, text="Create new Sunblind Control", command=self.new_sunblind)
         button.grid(row=0,column=0)
-        Tk.update(self.root)
+        #Tk.update(self.root)
 
     def del_sunblind_button(self):
         button = Button(self.function_frame_left, text="Delete Sunblind", command=self.del_sunblind)

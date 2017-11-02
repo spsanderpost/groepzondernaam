@@ -20,13 +20,14 @@ class Model:
             id = 0
         else: id = int(len(self.sunblinds))
 
-        sunblind = Sunblind(id=id, root=root)
+        sunblind = Sunblind(id=id, root=root, model=self)
 
         self.sunblinds.append(sunblind)
 
     def delete_sunblind(self):
         current = self.sunblinds.pop()
         current.delete_view()
-        current.lock_thread()
-        print(current)
+        del current
 
+    def get_sunblind(self, id):
+        return self.sunblinds[id]

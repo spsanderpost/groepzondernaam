@@ -14,17 +14,13 @@ import tkinter as tk
 
 class Application():
     def __init__(self):
+        model = Model()
+        MainView(model).update()
         pass
-
-    model = Model()
-    view = MainView(model)
 
     def test(self):
         self.view.update()
 
-    # =====================================
-    # If main gets called start all threads
-    # =====================================
     def main(self):
         self.test()
 
@@ -34,6 +30,6 @@ class Application():
 
 if __name__== '__main__':
     try:
-        Application().main()
+        Application()
     except KeyboardInterrupt:
         pass
