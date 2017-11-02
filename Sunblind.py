@@ -35,9 +35,17 @@ class Sunblind:
 
     def check_rolling(self):
         while True:
-            #print(self)
-            print("rolling up: " + str(self.rolling_down) + " // Rolling down: " + str(self.rolling_up))
-            sleep(2)
+            if self.rolling_up == True:
+                self.view.going_up(bool=True)
+                #self.view.return_frame.update()
+                #print(str(self) + " || Rolling Up")
+            elif self.rolling_down == True:
+                self.view.going_down(True)
+                #print(str(self) + " || Rolling down")
+            else:
+                self.view.going_up(False)
+                self.view.going_down(False)
+                #print(str(self) + " || Nothing")
 
     # ========================================
     # Unroll

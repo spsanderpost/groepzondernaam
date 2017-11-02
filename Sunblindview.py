@@ -30,7 +30,7 @@ class SunblindView:
         self.control_frame.pack(side=RIGHT)
 
         self.create_buttons()
-        self.create_led()
+        self.give_me_leds()
         self.return_frame.pack(side=BOTTOM, fill=X, expand=YES)
 
     def delete_view(self):
@@ -42,19 +42,60 @@ class SunblindView:
         # self.c.create_rectangle(10, 10, 100, feest, width=3)
         pass
 
-    def create_led(self):
-        led_off_path = r"Images/Off.gif"
-        led_off_image = PhotoImage(file=led_off_path).subsample(9)
-        led_off = Label(self.main_frame, image=led_off_image)
-        led_off.image = led_off_image
-        return led_off
+    def create_led(self, state):
+        if state == "off":
+            led_off_path = r"Images/Off.gif"
+            led_off_image = PhotoImage(file=led_off_path).subsample(9)
+            led_off = Label(self.main_frame, image=led_off_image)
+            led_off.image = led_off_image
+            return led_off
+        elif state == "green":
+            led_green_path = r"Images/Green.gif"
+            led_green_image = PhotoImage(file=led_green_path).subsample(9)
+            led_green = Label(self.main_frame, image=led_green_image)
+            led_green.image = led_green_image
+            return led_green
+        elif state == "yellow":
+            led_yellow_path = r"Images/Yellow.gif"
+            led_yellow_image = PhotoImage(file=led_yellow_path).subsample(9)
+            led_yellow = Label(self.main_frame, image=led_yellow_image)
+            led_yellow.image = led_yellow_image
+            return led_yellow
+        elif state == "red":
+            led_red_path = r"Images/Red.gif"
+            led_red_image = PhotoImage(file=led_red_path).subsample(9)
+            led_red = Label(self.main_frame, image=led_red_image)
+            led_red.image = led_red_image
+            return led_red
 
-    # ================================
-    # Setup the a view for a sunblind
-    # TODO: Create entrypoints for controling the sunblinds (Light intensity & maybe warmth?)
-    # ================================
+    def give_me_leds(self):
+        for x in range(3):
+            self.create_led("off")
+            self.create_led("off").grid(column=x, row=0)
+            self.return_frame.update()
 
-    # Setup specific functions for UI
+    def going_up(self, bool):
+        if bool == True:
+            working = True
+            green = self.create_led("green")
+            green.grid(column=0, row=0)
+            sleep(0.5)
+            green.destroy()
+            sleep(0.5)
+        elif bool == False:
+            working = False
+
+    def going_down(self, bool):
+        if bool == True:
+            working = True
+            red = self.create_led("red")
+            red.grid(column=1, row=0)
+            sleep(0.5)
+            red.destroy()
+            sleep(0.5)
+        elif bool == False:
+            working = False
+
     def start_go_up(self, event):
         self.sunblind.rolling_up = True
         #self.sunblind.status = "Rolling up"
@@ -97,21 +138,6 @@ class SunblindView:
 
     def initiate_lights(self):
         # Create a view that gives me visible action
-        led_green_path = r"Images/Green.gif"
-        led_yellow_path = r"Images/Yellow.gif"
-        led_red_path = r"Images/Red.gif"
-
-        led_green_image = PhotoImage(file=led_green_path).subsample(7)
-        led_yellow_image = PhotoImage(file=led_yellow_path).subsample(7)
-        led_red_image = PhotoImage(file=led_red_path).subsample(7)
-
-        led_green = Label(self.main_frame, image=led_green_image)
-        led_yellow = Label(self.main_frame, image=led_yellow_image)
-        led_red = Label(self.main_frame, image=led_red_image)
-
-        led_green.image = led_green_image
-        led_yellow.image = led_yellow_image
-        led_red.image = led_red_image
-
+        pass
 
 

@@ -25,7 +25,6 @@ class MainView:
 
     def update(self):
         try:
-            self.root.deiconify()
             self.root.mainloop()
         except:
             pass
