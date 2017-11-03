@@ -40,6 +40,7 @@ class SunblindView:
         self.canvas.create_rectangle(10, 10, 110, state, fill="grey")
         for x in self.canvas.find_all():
             self.canvas.delete(x-1)
+        self.canvas.update()
 
     def create_led(self, state):
         if state == "off":
@@ -86,19 +87,21 @@ class SunblindView:
         if bool == True:
             green = self.create_led("green")
             green.grid(column=0, row=0)
-            sleep(0.5)
+            sleep(0.25)
             green.destroy()
-            sleep(0.5)
+            sleep(0.25)
+            self.return_frame.update()
         elif bool == False:
-            working = False
+            pass
 
     def going_down(self, bool):
         if bool == True:
             red = self.create_led("red")
             red.grid(column=1, row=0)
-            sleep(0.5)
+            sleep(0.25)
             red.destroy()
-            sleep(0.5)
+            sleep(0.25)
+            self.return_frame.update()
         elif bool == False:
             pass
 
