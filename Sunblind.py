@@ -14,6 +14,7 @@ class Sunblind:
 
     # Make some Class variables
     id = 0
+    max_roll_out = 160
 
     # ========================================
     # Constructor of this class
@@ -34,18 +35,27 @@ class Sunblind:
         self.view.delete_view()
 
     def check_rolling(self):
+        initial_roll_out = i = 0
         while True:
             if self.rolling_up == True:
                 self.view.going_up(bool=True)
-                #self.view.return_frame.update()
-                #print(str(self) + " || Rolling Up")
+                if i >= 10:
+
+                    self.view.draw(i)
+                    i = i - 10
+                else:
+                    pass
             elif self.rolling_down == True:
                 self.view.going_down(True)
-                #print(str(self) + " || Rolling down")
+                if i <= self.max_roll_out:
+                    i += 10
+                    self.view.draw(i)
+
+                else:
+                    pass
             else:
                 self.view.going_up(False)
                 self.view.going_down(False)
-                #print(str(self) + " || Nothing")
 
     # ========================================
     # Unroll

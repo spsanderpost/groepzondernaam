@@ -23,24 +23,23 @@ class SunblindView:
         self.model = model
         self.sunblind = sunblind
         self.return_frame = Frame(master=root, relief=RAISED, bd=2)
-
         self.main_frame = Frame(master=self.return_frame)
         self.main_frame.pack(side=LEFT)
         self.control_frame = Frame(master=self.return_frame)
         self.control_frame.pack(side=RIGHT)
-
         self.create_buttons()
         self.give_me_leds()
+        self.canvas = Canvas(self.main_frame, width=110, height=170, relief=SUNKEN, bd=1)
+        self.canvas.grid(column=4,row=0)
         self.return_frame.pack(side=BOTTOM, fill=X, expand=YES)
 
     def delete_view(self):
         self.return_frame.forget()
 
-    def create_some(self, return_frame):
-        c = Canvas(return_frame)
-        # feest = 0
-        # self.c.create_rectangle(10, 10, 100, feest, width=3)
-        pass
+    def draw(self, state):
+        self.canvas.create_rectangle(10, 10, 110, state, fill="grey")
+        for x in self.canvas.find_all():
+            self.canvas.delete(x-1)
 
     def create_led(self, state):
         if state == "off":
@@ -74,9 +73,17 @@ class SunblindView:
             self.create_led("off").grid(column=x, row=0)
             self.return_frame.update()
 
+    def status_light(self):
+        self.yellow = self.create_led("yellow")
+        self.yellow.grid(column=2, row=0)
+
+    def off_status_light(self):
+        self.yellow.destroy()
+        self.return_frame.update()
+
+
     def going_up(self, bool):
         if bool == True:
-            working = True
             green = self.create_led("green")
             green.grid(column=0, row=0)
             sleep(0.5)
@@ -87,34 +94,29 @@ class SunblindView:
 
     def going_down(self, bool):
         if bool == True:
-            working = True
             red = self.create_led("red")
             red.grid(column=1, row=0)
             sleep(0.5)
             red.destroy()
             sleep(0.5)
         elif bool == False:
-            working = False
+            pass
 
     def start_go_up(self, event):
         self.sunblind.rolling_up = True
-        #self.sunblind.status = "Rolling up"
-        #print("start going up")
+        self.status_light()
 
     def stop_go_up(self, event):
         self.sunblind.rolling_up = False
-        #self.sunblind.status = "Stopped rolling up"
-        #print("stop going up")
+        self.off_status_light()
 
     def start_go_down(self, event):
         self.sunblind.rolling_down = True
-        #self.status = "Unrolling"
-        #print(self.model.rollin_down)
+        self.status_light()
 
     def stop_go_down(self, event):
         self.sunblind.rolling_down = False
-        #self.sunblind.status = "Stopped unrolling"
-        #print("stop going down")
+        self.off_status_light()
 
     def create_buttons(self):
         # Setup Up and Down button
