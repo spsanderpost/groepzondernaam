@@ -10,6 +10,7 @@ from tkinter import *
 from Mainview import MainView
 from time import sleep
 from threading import Thread
+from GraphView import *
 
 
 class SunblindView:
@@ -121,6 +122,9 @@ class SunblindView:
         self.sunblind.rolling_down = False
         self.off_status_light()
 
+    def enable_live_data(self):
+        self.graphview = GraphView(sunblind=self.sunblind, model=self.model)
+
     def create_buttons(self):
         # Setup Up and Down button
         up_path = r"Images/Up.gif"
@@ -132,6 +136,9 @@ class SunblindView:
         roll_down = Button(self.control_frame, image=down_image)
         roll_down.image = down_image
 
+        #graph button
+        graphbutton = Button(self.control_frame,text="Live Data",command=lambda:self.enable_live_data())
+
         # Create action on Button press and release
         roll_up.bind('<ButtonPress-1>',     self.start_go_up)
         roll_up.bind('<ButtonRelease-1>',   self.stop_go_up)
@@ -141,8 +148,11 @@ class SunblindView:
         roll_up.pack()
         roll_down.pack()
 
+        graphbutton.pack()
+
     def initiate_lights(self):
         # Create a view that gives me visible action
         pass
+
 
 

@@ -8,7 +8,7 @@
 from Sunblindview import SunblindView
 from time import sleep
 from threading import *
-from schedule import Scheduler
+from GraphView import *
 
 class Sunblind:
 
@@ -22,12 +22,14 @@ class Sunblind:
     def __init__(self, id, root, model):
         self.rolling_down = False
         self.rolling_up = False
+        self.live_data = False
         self.model = model
         self.id = id
         self.view = SunblindView(sunblind=self, root=root, model=model)
         #self.thread_1 = Thread(target=self.check_rolling(), daemon=True)
         #self.thread_1.start()
         #self.check_rolling()
+
         self.t1 = Thread(target=self.check_rolling, daemon=True)
         self.t1.start()
 
