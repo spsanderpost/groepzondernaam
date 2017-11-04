@@ -12,26 +12,25 @@ class GraphView:
         #initiate variables
         self.model = model
         self.sunblind = sunblind
+        #Root,Canvas and Frame
         self.root = Tk()
-        self.root.title("Live Data with ID.NO %s" % (self.sunblind.id))
-        self.canvas = Canvas(self.root, width=810, height=600 ,relief=SUNKEN, bd=1)
-        self.canvas.pack(expand=YES, fill=BOTH)
+        self.root.title("Live Data ID.NO %s" % (self.sunblind.id))
+        self.frame = Frame(self.root,width=1200,height=700,bd=1)
+        self.frame.pack()
+        self.canvas = Canvas(self.frame, width=810, height=600 ,relief=SUNKEN, bd=1)
+        self.canvas.pack(side=LEFT,expand=YES, fill=X)
+        self.infocanvas = Canvas(self.frame,width=300,height=600,relief=SUNKEN, bd=1)
+        self.infocanvas.pack(side=RIGHT,expand=YES,fill=X)
+        #values
         self.yvalue = 0
         self.s = 1
         self.x2 = 50
         self.y2 = 550 - 5 * (self.yvalue / 2)
         self.create_window()
+        self.start()
 
-        #self.t1 = Thread(target=self.update, daemon=True)
-       # self.t1.start()
-
-  #  def update(self):
-  #      try:
-  #         self.root.after(1000,self.step)
-  #         self.root.mainloop()
-  #      except:
-  #          pass
     def step(self):
+        #Execute once every second, updates the graph and the infoframe
         self.yvalue = (randint(0,100) /2)
         if self.s == 16:
             # new frame
@@ -44,6 +43,10 @@ class GraphView:
         self.y2 = 550 - 5 * self.yvalue
         self.canvas.create_line(x1, y1, self.x2, self.y2, fill='orange', tags='temp')
         self.s = self.s+1
+
+        #update InfoCanvas-Dynamic
+        self.infocanvas.create_window(60, 80,window=Label(self.infocanvas, text="Current Y-Value = %d" % (self.yvalue / 2)))
+
         self.canvas.after(1000, self.step)
 
     def create_window(self):
@@ -64,6 +67,10 @@ class GraphView:
         self.canvas.create_line(50,550,800,550, width=2) # x-axis
         self.canvas.create_line(50,550,50,50, width=2)    # y-axis
 
+        #Infolabels-Static
+        self.infocanvas.create_window(150,30,window=Label(self.infocanvas,text="Live Data",font=("Arial",20)))
+        self.infocanvas.create_window(55,60,window=Label(self.infocanvas,text="Device ID NO = %s" % (self.sunblind.id)))
+
         # x-axis
         for i in range(16):
             x = 50 + (i * 50)
@@ -76,9 +83,10 @@ class GraphView:
             self.canvas.create_line(50,y,800,y, width=1, dash=(2,5))
             self.canvas.create_text(40,y, text='%d'% (i*10/2), anchor=E)
 
-        #create buttons
-        Button(self.root,text='Read out Data', command=lambda:self.start()).pack()
+        #create button
+        #Button(self.root, text='Read out Data', command=lambda: self.start()).pack()
         Button(self.root, text='Close Window', command=lambda: self.close()).pack()
+
 
     def close(self):
         self.root.destroy()
