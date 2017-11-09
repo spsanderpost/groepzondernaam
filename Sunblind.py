@@ -29,11 +29,10 @@ class Sunblind:
         self.model = model
         self.com = com
         self.view = SunblindView(sunblind=self, model=model, root=root)
-        #self.thread_1 = Thread(target=self.check_rolling(), daemon=True)
-        #self.thread_1.start()
-        #self.check_rolling()
-        self.t1 = Thread(target=self.check_rolling, daemon=True)
-        self.t1.start()
+        t1 = Thread(target=self.check_rolling, daemon=True)
+        t2 = Thread(target=self.getSerialData, daemon=True)
+        t1.start()
+        t2.start()
 
     def delete_view(self):
         self.view.delete_view()
@@ -61,15 +60,9 @@ class Sunblind:
                 self.view.going_up(False)
                 self.view.going_down(False)
 
-    # ========================================
-    # Unroll
-    # ========================================
     def unroll(self):
         print("unroll")
 
-    # ========================================
-    # Roll up
-    # ========================================
     def roll_up(self):
         print("Roll Up")
 
@@ -77,14 +70,14 @@ class Sunblind:
         #SunblindView()
         pass
 
-# argument is com-poort.
-    def getSerialData(port):
-        ser = serial.Serial(port, 9600, timeout=1)
+    # argument is com-poort.
+    def getSerialData(self):
+        ser = serial.Serial(self.com, 9600, timeout=1)
         lastval = ""
         last = ""
         sensor_name = ""
         output_dictionary = {}
-        output_dictionary['Poort'] = port
+        output_dictionary['Poort'] = self.com
         while True:
             data = ser.read()
             data = str(data, 'utf-8')

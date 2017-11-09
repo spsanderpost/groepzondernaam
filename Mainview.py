@@ -4,13 +4,13 @@
 # ===============================
 # First import al necessary files
 # ===============================
-
 import tkinter as tk
 from tkinter import *
 from threading import Thread
-from time import sleep
+
 
 root = None
+
 
 class MainView:
 
@@ -43,16 +43,13 @@ class MainView:
 
     def new_sunblind(self):
         self.model.create_sunblind(root=root, com="test")
-        #Tk.update(self.root)
 
     def del_sunblind(self):
         self.model.delete_sunblind()
-        #Tk.update(self.root)
 
     def add_sunblind_button(self):
         button = Button(self.function_frame_left, text="Create new Sunblind Control", command=self.new_sunblind)
         button.grid(row=0,column=0)
-        #Tk.update(self.root)
 
     def del_sunblind_button(self):
         button = Button(self.function_frame_left, text="Delete Sunblind", command=self.del_sunblind)

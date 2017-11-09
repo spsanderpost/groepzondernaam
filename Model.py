@@ -4,14 +4,13 @@
 # ===============================
 # First import al necessary files
 # ===============================
-
 from Sunblind import Sunblind
 from threading import Thread
 from Mainview import root
 import serial
 import sys
 import glob
-import tkinter as tk
+
 
 class Model:
 

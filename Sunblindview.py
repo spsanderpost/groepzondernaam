@@ -4,17 +4,11 @@
 # ===============================
 # First import al necessary files
 # ===============================
-import sys
-import tkinter as tk
 from tkinter import *
-from Mainview import MainView
 from time import sleep
-from threading import Thread
 
 
 class SunblindView:
-
-    id = ""
 
     # ===========================
     # The Constructor
@@ -46,25 +40,25 @@ class SunblindView:
     def create_led(self, state):
         if state == "off":
             led_off_path = r"Images/Small Off.gif"
-            led_off_image = PhotoImage(file=led_off_path).subsample(9)
+            led_off_image = PhotoImage(file=led_off_path)
             led_off = Label(self.main_frame, image=led_off_image)
             led_off.image = led_off_image
             return led_off
         elif state == "green":
-            led_green_path = r"Images/Green.gif"
-            led_green_image = PhotoImage(file=led_green_path).subsample(9)
+            led_green_path = r"Images/Small Green.gif"
+            led_green_image = PhotoImage(file=led_green_path)
             led_green = Label(self.main_frame, image=led_green_image)
             led_green.image = led_green_image
             return led_green
         elif state == "yellow":
-            led_yellow_path = r"Images/Yellow.gif"
-            led_yellow_image = PhotoImage(file=led_yellow_path).subsample(9)
+            led_yellow_path = r"Images/Small Yellow.gif"
+            led_yellow_image = PhotoImage(file=led_yellow_path)
             led_yellow = Label(self.main_frame, image=led_yellow_image)
             led_yellow.image = led_yellow_image
             return led_yellow
         elif state == "red":
-            led_red_path = r"Images/Red.gif"
-            led_red_image = PhotoImage(file=led_red_path).subsample(9)
+            led_red_path = r"Images/Small Red.gif"
+            led_red_image = PhotoImage(file=led_red_path)
             led_red = Label(self.main_frame, image=led_red_image)
             led_red.image = led_red_image
             return led_red
@@ -126,10 +120,10 @@ class SunblindView:
 
     def create_buttons(self):
         # Setup Up and Down button
-        up_path = r"Images/Up.gif"
-        down_path = r"Images/Down.gif"
-        up_image = PhotoImage(file=up_path).subsample(6)
-        down_image = PhotoImage(file=down_path).subsample(6)
+        up_path = r"Images/Small Up.gif"
+        down_path = r"Images/Small Down.gif"
+        up_image = PhotoImage(file=up_path)
+        down_image = PhotoImage(file=down_path)
         roll_up = Button(self.control_frame, image=up_image)
         roll_up.image = up_image
         roll_down = Button(self.control_frame, image=down_image)

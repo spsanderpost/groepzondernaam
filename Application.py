@@ -4,26 +4,15 @@
 # ===============================
 # First import al necessary files
 # ===============================
-
 from Model import Model
-from Sunblind import Sunblind
 from Mainview import MainView
-from Sunblindview import SunblindView
-from threading import Thread
-import tkinter as tk
+
 
 class Application():
     def __init__(self):
         model = Model()
         model.start_thread()
         MainView(model).update()
-        pass
-
-    def test(self):
-        self.view.update()
-
-    def main(self):
-        self.test()
 
 # ===============================
 # Try to make this app runnable
