@@ -15,7 +15,7 @@ class GraphView:
         #Root,Canvas and Frame
         self.root = Tk()
         self.root.title("Live Data ID.NO %s" % (self.sunblind.id))
-        self.frame = Frame(self.root,width=1200,height=700,bd=1)
+        self.frame = Frame(self.root,bd=1)
         self.frame.pack()
         self.seconds = 0
         self.minutes = 0
@@ -39,12 +39,10 @@ class GraphView:
         self.show_distance = Button(self.root, text="Show distance graph", command=lambda: self.distance_window()).pack(side=LEFT)
         #live_data button
         self.show_livedata = Button(self.root,text="Show live data",command=lambda:self.live_data_window()).pack(side=LEFT)
-        #self.delete_livedata = Button(self.root, text="Delete live data", command=lambda: self.destroy_canvas(self.live_data_window())).pack(side=RIGHT)
         #close button
         self.close_button = Button(self.root, text='Close Window', command=lambda: self.close()).pack(side=LEFT)
 
         self.step()
-
 
     def step(self):
         #Execute once every second, updates the graph and the infoframe
