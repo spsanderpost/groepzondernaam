@@ -10,6 +10,8 @@ from tkinter import *
 from threading import Thread
 from time import sleep
 
+root = None
+
 class MainView:
 
     # ===========================
@@ -17,26 +19,30 @@ class MainView:
     # ===========================
     def __init__(self, model):
         self.model = model
-        self.root = tk.Tk()
-        self.root.winfo_toplevel().title("Zeng Terminal")
+        global root
+        root = tk.Tk()
+        root.winfo_toplevel().title("Zeng Terminal")
         self.setup_buttons_left()
         self.t1 = Thread(target=self.update, daemon=True)
         self.t1.start()
 
     def update(self):
         try:
-            self.root.mainloop()
+            root.mainloop()
         except:
             pass
 
+    def get_root(self):
+        return root
+
     def setup_buttons_left(self):
-        self.function_frame_left = Frame(self.root)
+        self.function_frame_left = Frame(root)
         self.add_sunblind_button()
         self.del_sunblind_button()
         self.function_frame_left.pack(side=TOP)
 
     def new_sunblind(self):
-        self.model.create_sunblind(root=self.root)
+        self.model.create_sunblind(root=root, com="test")
         #Tk.update(self.root)
 
     def del_sunblind(self):

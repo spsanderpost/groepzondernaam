@@ -15,6 +15,7 @@ import tkinter as tk
 class Application():
     def __init__(self):
         model = Model()
+        model.start_thread()
         MainView(model).update()
         pass
 
