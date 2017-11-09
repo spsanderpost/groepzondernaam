@@ -6,9 +6,7 @@
 # ===============================
 
 from Sunblindview import SunblindView
-from time import sleep
 from threading import *
-from schedule import Scheduler
 import serial
 
 class Sunblind:
@@ -43,7 +41,6 @@ class Sunblind:
             if self.rolling_up == True:
                 self.view.going_up(bool=True)
                 if i >= 10:
-
                     self.view.draw(i)
                     i = i - 5
                 else:
@@ -53,7 +50,6 @@ class Sunblind:
                 if i <= self.max_roll_out:
                     i += 5
                     self.view.draw(i)
-
                 else:
                     pass
             else:
@@ -96,3 +92,4 @@ class Sunblind:
                 lastval = ""
             else:
                 lastval += data.rstrip()
+            print(output_dictionary)

@@ -14,12 +14,15 @@ class Application():
         model.start_thread()
         MainView(model).update()
 
-# ===============================
+# ======================================================
 # Try to make this app runnable
-# ===============================
+#
+# Don't attach the Arduino before running your program!
+#
+# ======================================================
 
 if __name__== '__main__':
     try:
         Application()
-    except KeyboardInterrupt:
+    except Exception:
         pass

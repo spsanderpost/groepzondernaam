@@ -138,8 +138,4 @@ class SunblindView:
         roll_up.pack()
         roll_down.pack()
 
-    def initiate_lights(self):
-        # Create a view that gives me visible action
-        pass
-
 
