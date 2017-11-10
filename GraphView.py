@@ -47,8 +47,8 @@ class GraphView:
 
     def step(self):
         #Execute once every second, updates the graph and the infoframe
+        self.tempvalue = (randint(0,100) /2)
         if self.temp_graph:
-            self.tempvalue = (randint(0,100) /2)
             if self.s == 16:
                 # new frame
                 self.s = 1
@@ -61,8 +61,9 @@ class GraphView:
             self.canvas.create_line(x1, y1, self.x2, self.y2, fill='orange', tags='temp')
             self.s = self.s+1
 
+
+        self.distancevalue = (randint(0,100) /2)
         if self.distance_graph:
-            self.distancevalue = (randint(0,100) /2)
             if self.ds == 16:
                 # new frame
                 self.ds = 1
