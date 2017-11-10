@@ -27,11 +27,12 @@ class SettingsView:
         l2 = Label(self.root, text="Min Outroll: ")
         self.e1 = Entry(self.root, width=60)
         self.e2 = Entry(self.root, width=60)
+        self.e1.insert(1, self.sunblind.max_roll_out)
+        self.e2.insert(1, self.sunblind.min_roll_out)
         l1.grid(row=0, column=0)
         l2.grid(row=1, column=0)
         self.e1.grid(row=0, column=1)
         self.e2.grid(row=1, column=1)
-
         b1 = Button(self.root, text="Save", command=self.save)
         b1.grid(row=2, column=1)
 

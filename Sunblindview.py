@@ -132,7 +132,10 @@ class SunblindView:
         roll_up.image = up_image
         roll_down = Button(self.control_frame, image=down_image)
         roll_down.image = down_image
-        einstellungen = Button(self.control_frame, text="Settings...", command=self.sunblind.set_sunblind_settings)
+        einstellungen_path = r"Images/Settings.gif"
+        einstellungen_image = PhotoImage(file=einstellungen_path).subsample(2)
+        einstellungen = Button(self.control_frame, text="Settings...", image=einstellungen_image, command=self.sunblind.set_sunblind_settings)
+        einstellungen.image = einstellungen_image
 
         # Create action on Button press and release
         roll_up.bind('<ButtonPress-1>',     self.start_go_up)

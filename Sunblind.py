@@ -25,7 +25,7 @@ class Sunblind:
     # @param root the window where views has to attach to
     # ==========================================================
     def __init__(self, com, model, root):
-        self.max_roll_out = 0
+        self.max_roll_out = 160
         self.min_roll_out = 0
         self.root = root
         self.is_alive = True
