@@ -18,6 +18,7 @@ class Model:
 
     def __init__(self):
         self.coms = self.serial_ports()
+        self.com_list = []
         pass
 
     def start_thread(self):
@@ -26,22 +27,32 @@ class Model:
 
     def com_check(self):
         while True:
-            current = self.serial_ports()
-            diffadd = [item for item in current if not item in self.coms]
-            diffdel = [item for item in self.coms if not item in current]
-            if len(diffadd) != 0:
-                for x in diffadd:
-                    if x not in self.coms:
-                        print("added item")
-                        #print(self.coms)
-                        self.create_sunblind(root=root, com=x)
+            if sys.platform.startswith('win'):
+                current = self.serial_ports()
+                for i in current:
+                    if i not in self.com_list:
+                        self.com_list.append(i)
+                if current != self.com_list:
+                    for i in self.com_list:
+                        if i not in current:
+                            self.com_list.remove(i)
+            elif sys.platform.startswith('darwin'):
+                current = self.serial_ports()
+                diffadd = [item for item in current if not item in self.coms]
+                diffdel = [item for item in self.coms if not item in current]
+                if len(diffadd) != 0:
+                    for x in diffadd:
+                        if x not in self.coms:
+                            #print("added item")
+                            #print(self.coms)
+                            self.create_sunblind(root=root, com=x)
+                            self.coms = current
+                            #print(self.coms)
+                elif len(diffdel) != 0:
+                    for x in diffdel:
+                        #print("deleted item!")
+                        self.delete_sunblind(com=x)
                         self.coms = current
-                        #print(self.coms)
-            elif len(diffdel) != 0:
-                for x in diffdel:
-                    print("deleted item!")
-                    self.delete_sunblind(com=x)
-                    self.coms = current
 
     def create_sunblind(self, root, com):
         if com != "test":
@@ -89,6 +100,7 @@ class Model:
         for port in ports:
             try:
                 s = serial.Serial(port)
+                print(s.name)
                 s.close()
                 result.append(port)
             except (OSError, serial.SerialException):

@@ -6,7 +6,9 @@
 # ===============================
 
 from Sunblindview import SunblindView
+from SettingsView import SettingsView
 from threading import *
+from time import sleep
 import serial
 
 class Sunblind:
@@ -14,12 +16,13 @@ class Sunblind:
     # Make some Class variables
     is_alive = False
     com = 0
-    max_roll_out = 160
 
     # ========================================
     # Constructor of this class
     # ========================================
     def __init__(self, com, model, root):
+        self.max_roll_out = 0
+        self.min_roll_out = 0
         self.root = root
         self.is_alive = True
         self.rolling_down = False
@@ -27,6 +30,7 @@ class Sunblind:
         self.model = model
         self.com = com
         self.view = SunblindView(sunblind=self, model=model, root=root)
+        self.serial = serial.Serial(com, 9600, timeout=.1)
         t1 = Thread(target=self.check_rolling, daemon=True)
         t2 = Thread(target=self.getSerialData, daemon=True)
         t1.start()
@@ -34,6 +38,9 @@ class Sunblind:
 
     def delete_view(self):
         self.view.delete_view()
+
+    def set_sunblind_settings(self):
+        SettingsView(self, self.model).root.mainloop()
 
     def check_rolling(self):
         initial_roll_out = i = 0
@@ -56,6 +63,13 @@ class Sunblind:
                 self.view.going_up(False)
                 self.view.going_down(False)
 
+    def write_roll_to_arduino(self, what, val):
+        sleep(1)
+        if what == min:
+            self.serial.write("SETMIN" + val)
+        elif what == max:
+            self.serial.write("SETMAX" + val)
+
     def unroll(self):
         print("unroll")
 
@@ -66,7 +80,6 @@ class Sunblind:
         #SunblindView()
         pass
 
-    # argument is com-poort.
     def getSerialData(self):
         ser = serial.Serial(self.com, 9600, timeout=1)
         lastval = ""
