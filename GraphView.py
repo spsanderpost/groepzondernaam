@@ -6,6 +6,7 @@ import time
 from threading import Thread
 
 
+
 class GraphView:
 
     def __init__(self,sunblind,model):
@@ -14,7 +15,7 @@ class GraphView:
         self.sunblind = sunblind
         #Root,Canvas and Frame
         self.root = Tk()
-        self.root.title("Live Data ID.NO %s" % (self.sunblind.id))
+        self.root.title("Live Data ID.NO %s" % (self.sunblind.com))
         self.frame = Frame(self.root,bd=1)
         self.frame.pack()
         self.seconds = 0
@@ -94,7 +95,7 @@ class GraphView:
         self.canvas.pack(side=LEFT,expand=YES, fill=X)
 
         #title
-        title = Label(self.canvas,text="Temperatuur grafiek",fg='Orange',font=("Arial",16))
+        title = Label(self.canvas,text="Temperature",fg='Orange',font=("Arial",16))
         self.canvas.create_window(400,25,window=title)
 
         # Y-labels
@@ -107,7 +108,7 @@ class GraphView:
         self.canvas.create_window(18, 333, window=celciuslabel)
 
         # X-labels
-        xlabel = Label(self.canvas, text='Tijd in seconden', fg='Orange')
+        xlabel = Label(self.canvas, text='Time in seconds', fg='Orange')
         xlabel.pack()
         self.canvas.create_window(400, 575, window=xlabel)
 
@@ -137,11 +138,11 @@ class GraphView:
         self.distance_canvas.pack(side=LEFT,expand=YES, fill=X)
 
         #title
-        title = Label(self.distance_canvas,text="Afstands grafiek",fg='Red',font=("Arial",16))
+        title = Label(self.distance_canvas,text="Distance",fg='Red',font=("Arial",16))
         self.distance_canvas.create_window(400,25,window=title)
 
         # Y-labels
-        templabel = Label(self.distance_canvas, text=' Afstand', fg='Red')
+        templabel = Label(self.distance_canvas, text=' Distance', fg='Red')
         templabel.pack()
         self.distance_canvas.create_window(18, 315, window=templabel)
 
@@ -150,7 +151,7 @@ class GraphView:
         #self.distance_canvas.create_window(18, 333, window=celciuslabel)
 
         # X-labels
-        xlabel = Label(self.distance_canvas, text='Tijd in seconden', fg='Red')
+        xlabel = Label(self.distance_canvas, text='Time in seconds', fg='Red')
         xlabel.pack()
         self.distance_canvas.create_window(400, 575, window=xlabel)
 
@@ -192,7 +193,7 @@ class GraphView:
 
         #Infolabels-Static
         self.infocanvas.create_window(150,30,window=Label(self.infocanvas,text="Live Data",font=("Arial",20)))
-        self.infocanvas.create_window(55,60,window=Label(self.infocanvas,text="Device ID NO = %s" % (self.sunblind.id)))
+        self.infocanvas.create_window(55,60,window=Label(self.infocanvas,text="Device ID NO = %s" % (self.sunblind.com)))
 
 
         self.delete_livedata = Button(self.infocanvas, text="X",fg='red',command=self.delete_livedata)
