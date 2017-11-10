@@ -10,14 +10,18 @@ from Mainview import root
 import serial
 import sys
 import glob
-
+from time import *
+import copy
 
 class Model:
 
     sunblinds = []
 
     def __init__(self):
-        self.coms = self.serial_ports()
+        self.com_list = []
+        self.counter = 0
+        self.current = []
+        self.com_delete = []
         pass
 
     def start_thread(self):
@@ -26,29 +30,28 @@ class Model:
 
     def com_check(self):
         while True:
+            sleep(1)
             current = self.serial_ports()
-            diffadd = [item for item in current if not item in self.coms]
-            diffdel = [item for item in self.coms if not item in current]
-            if len(diffadd) != 0:
-                for x in diffadd:
-                    if x not in self.coms:
-                        print("added item")
-                        #print(self.coms)
-                        self.create_sunblind(root=root, com=x)
-                        self.coms = current
-                        #print(self.coms)
-            elif len(diffdel) != 0:
-                for x in diffdel:
-                    print("deleted item!")
-                    self.delete_sunblind(com=x)
-                    self.coms = current
+            for i in current:
+                if i not in self.com_list:
+                    x = i[3:4]
+                    self.com_list.append(i)
+                    self.create_sunblind(root,com=x)
+            if current != self.com_list:
+                for i in self.com_list:
+                    if i not in current:
+                        x = copy.copy(i)
+                        self.com_list.remove(i)
+                        self.delete_sunblind(com=x)
+
+
 
     def create_sunblind(self, root, com):
         if com != "test":
-            com = com
+            com = "COM"+com
         else:
             com = "test"
-
+        print(com)
         sunblind = Sunblind(com=com, model=self, root=root)
         self.sunblinds.append(sunblind)
 
