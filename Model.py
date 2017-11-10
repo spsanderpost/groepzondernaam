@@ -16,6 +16,9 @@ class Model:
 
     sunblinds = []
 
+    # ============================
+    # Constructor
+    # ============================
     def __init__(self):
         self.coms = self.serial_ports()
         self.com_list = []
@@ -25,6 +28,8 @@ class Model:
         t1 = Thread(target=self.com_check, daemon=True)
         t1.start()
 
+    # This function first checks for os
+    # Then it adds or deletes sunblinds when adding one to a COM port
     def com_check(self):
         while True:
             if sys.platform.startswith('win'):
@@ -43,17 +48,18 @@ class Model:
                 if len(diffadd) != 0:
                     for x in diffadd:
                         if x not in self.coms:
-                            #print("added item")
-                            #print(self.coms)
                             self.create_sunblind(root=root, com=x)
                             self.coms = current
-                            #print(self.coms)
                 elif len(diffdel) != 0:
                     for x in diffdel:
-                        #print("deleted item!")
                         self.delete_sunblind(com=x)
                         self.coms = current
+            else:
+                raise EnvironmentError
 
+    # Create a sunblind
+    # @param root is the window where a view has to be attached
+    # @param com is the port where an Arduino is connected to and an identifier in the object
     def create_sunblind(self, root, com):
         if com != "test":
             com = com
@@ -63,6 +69,8 @@ class Model:
         sunblind = Sunblind(com=com, model=self, root=root)
         self.sunblinds.append(sunblind)
 
+    # Delete a sunblind
+    # @param com when not given None else the exact port where an Arduino is connected to
     def delete_sunblind(self, com=None):
         for x in self.sunblinds:
             if x.com == com:
@@ -77,7 +85,8 @@ class Model:
     def get_sunblind(self, id):
         return self.sunblinds[id]
 
-    # get list met serial poorten
+    # Gets a list with added ports to the system
+    # First checks what platform where wunning
     def serial_ports(self):
         """ Lists serial port names
 

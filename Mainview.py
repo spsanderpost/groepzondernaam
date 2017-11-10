@@ -8,15 +8,16 @@ import tkinter as tk
 from tkinter import *
 from threading import Thread
 
-
+# Set a global
 root = None
 
 
 class MainView:
 
-    # ===========================
+    # =========================================
     # Constructor of the class
-    # ===========================
+    # @param model the model we're refering to
+    # =========================================
     def __init__(self, model):
         self.model = model
         global root
@@ -39,6 +40,7 @@ class MainView:
         self.function_frame_left = Frame(root)
         self.add_sunblind_button()
         self.del_sunblind_button()
+        self.warning()
         self.function_frame_left.pack(side=TOP)
 
     def new_sunblind(self):
@@ -49,11 +51,11 @@ class MainView:
 
     def add_sunblind_button(self):
         button = Button(self.function_frame_left, text="Create new Sunblind Control", command=self.new_sunblind)
-        button.grid(row=0,column=0)
+        button.grid(row=1,column=0)
 
     def del_sunblind_button(self):
         button = Button(self.function_frame_left, text="Delete Sunblind", command=self.del_sunblind)
-        button.grid(row=0,column=1)
+        button.grid(row=1,column=1)
 
-
-
+    def warning(self):
+        Label(self.function_frame_left, text="!!!Do not attach your arduino before running the app!!!").grid(row=0, column=0, columnspan=2)

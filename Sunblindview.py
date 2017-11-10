@@ -31,12 +31,16 @@ class SunblindView:
     def delete_view(self):
         self.return_frame.forget()
 
+    # Draw a virtual sunscreen in a window
+    # @param state is how much the screen had unrolled
     def draw(self, state):
         self.canvas.create_rectangle(10, 10, 110, state, fill="grey")
         for x in self.canvas.find_all():
             self.canvas.delete(x-1)
         self.canvas.update()
 
+    # Draw some light on the screen
+    # @param state which color we wanna draw
     def create_led(self, state):
         if state == "off":
             led_off_path = r"Images/Small Off.gif"

@@ -8,7 +8,7 @@ from Model import Model
 from Mainview import MainView
 
 
-class Application():
+class Application:
     def __init__(self):
         model = Model()
         model.start_thread()

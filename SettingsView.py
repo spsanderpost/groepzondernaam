@@ -1,11 +1,25 @@
+# Created on 10 November 2017
+# @author Sander Post
+
+# ===============================
+# First import al necessary files
+# ===============================
 import tkinter as tk
 from tkinter import *
 
+
 class SettingsView:
+
+    # =============================================
+    # Constructor
+    # @param sunblind the object we're refering to
+    # @param model the model were refering to
+    # =============================================
     def __init__(self, sunblind, model):
         self.sunblind = sunblind
         self.model = model
         self.root = tk.Tk()
+        self.root.winfo_toplevel().title("Sunblind settings")
         self.set_settings()
 
     def set_settings(self):
@@ -30,4 +44,4 @@ class SettingsView:
             self.sunblind.write_roll_to_arduino(what=max, val=valuemax)
             self.sunblind.write_roll_to_arduino(what=min, val=valuemin)
         except ValueError:
-            print("Geen waarde jong!")
+            print("Geen juiste waarden ingevoerd.")
