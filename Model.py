@@ -11,48 +11,84 @@ import serial
 import sys
 import glob
 from time import *
-import copy
+
 
 class Model:
 
     sunblinds = []
 
+    # ============================
+    # Constructor
+    # ============================
     def __init__(self):
+        #self.coms = self.serial_ports()
         self.com_list = []
         self.counter = 0
-        self.current = []
-        self.com_delete = []
         pass
 
     def start_thread(self):
         t1 = Thread(target=self.com_check, daemon=True)
         t1.start()
 
+    # This function first checks for os
+    # Then it adds or deletes sunblinds when adding one to a COM port
     def com_check(self):
         while True:
-            sleep(1)
-            current = self.serial_ports()
-            for i in current:
-                if i not in self.com_list:
-                    x = i[3:4]
-                    self.com_list.append(i)
-                    self.create_sunblind(root,com=x)
-            if current != self.com_list:
-                for i in self.com_list:
-                    if i not in current:
-                        x = copy.copy(i)
-                        self.com_list.remove(i)
-                        self.delete_sunblind(com=x)
+            sleep(0.5)
+            if sys.platform.startswith('win'):
+                current = self.serial_ports()
+                sleep(0.5)
+                for i in current:
+                    if i not in self.com_list:
+                        self.com_list.append(i)
+                        self.create_sunblind(root,i)
+                print(current)
+                print(self.com_list)
 
+                if current != self.com_list:
+                    for i in self.com_list:
+                        if i not in current:
+                            self.com_list.remove(i)
+                            self.delete_sunblind(i)
+
+            elif sys.platform.startswith('darwin'):
+                current = self.serial_ports()
+                diffadd = [item for item in current if not item in self.coms]
+                diffdel = [item for item in self.coms if not item in current]
+                if len(diffadd) != 0:
+                    for x in diffadd:
+                        if x not in self.coms:
+                            self.create_sunblind(root=root, com=x)
+                            self.coms = current
+                elif len(diffdel) != 0:
+                    for x in diffdel:
+                        self.delete_sunblind(com=x)
+                        self.coms = current
+            else:
+                raise EnvironmentError
+
+    # Create a sunblind
+    # @param root is the window where a view has to be attached
+    # @param com is the port where an Arduino is connected to and an identifier in the object
     def create_sunblind(self, root, com):
         if com != "test":
-            com = "COM"+com
+            com = com
         else:
             com = "test"
-        print(com)
+
         sunblind = Sunblind(com=com, model=self, root=root)
         self.sunblinds.append(sunblind)
+    """
+    def delete_sunblind(self, com=None):
+        for x in self.sunblinds:
+            x.delete_view()
+            x.is_alive = False
+            del x
+    """
 
+
+    # Delete a sunblind
+    # @param com when not given None else the exact port where an Arduino is connected to
     def delete_sunblind(self, com=None):
         for x in self.sunblinds:
             if x.com == com:
@@ -64,10 +100,12 @@ class Model:
                 x.is_alive = False
                 del x
 
+
     def get_sunblind(self, id):
         return self.sunblinds[id]
 
-    # get list met serial poorten
+    # Gets a list with added ports to the system
+    # First checks what platform where wunning
     def serial_ports(self):
         """ Lists serial port names
 

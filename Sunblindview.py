@@ -31,12 +31,16 @@ class SunblindView:
     def delete_view(self):
         self.return_frame.forget()
 
+    # Draw a virtual sunscreen in a window
+    # @param state is how much the screen had unrolled
     def draw(self, state):
         self.canvas.create_rectangle(10, 10, 110, state, fill="grey")
         for x in self.canvas.find_all():
             self.canvas.delete(x-1)
         self.canvas.update()
 
+    # Draw some light on the screen
+    # @param state which color we wanna draw
     def create_led(self, state):
         if state == "off":
             led_off_path = r"Images/Small Off.gif"
@@ -117,10 +121,8 @@ class SunblindView:
     def stop_go_down(self, event):
         self.sunblind.rolling_down = False
         self.off_status_light()
-
     def enable_live_data(self):
         self.graphview = GraphView(sunblind=self.sunblind, model=self.model)
-
 
     def create_buttons(self):
         # Setup Up and Down button
@@ -132,9 +134,15 @@ class SunblindView:
         roll_up.image = up_image
         roll_down = Button(self.control_frame, image=down_image)
         roll_down.image = down_image
+        einstellungen_path = r"Images/Settings.gif"
+        einstellungen_image = PhotoImage(file=einstellungen_path).subsample(2)
+        einstellungen = Button(self.control_frame, text="Settings...", image=einstellungen_image, command=self.sunblind.set_sunblind_settings)
+        einstellungen.image = einstellungen_image
 
-        # graph button
-        graphbutton = Button(self.control_frame, text="Live Data", command=lambda: self.enable_live_data())
+        graph_path = r"Images/Graphs.gif"
+        graph_image = PhotoImage(file=graph_path).subsample(2)
+        graphbutton = Button(self.control_frame, text="Grafiek", image=graph_image, command=self.enable_live_data)
+        graphbutton.image = graph_image
 
         # Create action on Button press and release
         roll_up.bind('<ButtonPress-1>',     self.start_go_up)
@@ -144,5 +152,8 @@ class SunblindView:
 
         roll_up.pack()
         roll_down.pack()
+        einstellungen.pack()
         graphbutton.pack()
+
+
 
