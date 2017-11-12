@@ -44,8 +44,6 @@ class Model:
                         self.com_list.remove(i)
                         self.delete_sunblind(com=x)
 
-
-
     def create_sunblind(self, root, com):
         if com != "test":
             com = "COM"+com
