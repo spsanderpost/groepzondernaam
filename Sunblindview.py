@@ -6,7 +6,7 @@
 # ===============================
 from tkinter import *
 from time import sleep
-
+from GraphView import *
 
 class SunblindView:
 
@@ -24,15 +24,19 @@ class SunblindView:
         self.control_frame.pack(side=RIGHT)
         self.create_buttons()
         self.give_me_leds()
-        self.canvas = Canvas(self.main_frame, width=110, height=170, relief=SUNKEN, bd=1)
-        self.canvas.grid(column=4,row=0)
+        #self.canvas = Canvas(self.main_frame, width=110, height=170, relief=SUNKEN, bd=1)
+        #self.canvas.grid(column=4,row=0)
         self.return_frame.pack(side=BOTTOM, fill=X, expand=YES)
 
     def delete_view(self):
         self.return_frame.forget()
 
+    def draw_canvas(self):
+        self.canvas = Canvas(self.main_frame, width=110, height=self.sunblind.output_dictionary["Max"], relief=SUNKEN, bd=1)
+        self.canvas.grid(column=4,row=0)
+
     # Draw a virtual sunscreen in a window
-    # @param state is how much the screen had unrolled
+    # @param state is how much the screen has unrolled
     def draw(self, state):
         self.canvas.create_rectangle(10, 10, 110, state, fill="grey")
         for x in self.canvas.find_all():
@@ -121,6 +125,8 @@ class SunblindView:
     def stop_go_down(self, event):
         self.sunblind.rolling_down = False
         self.off_status_light()
+    def enable_live_data(self):
+        self.graphview = GraphView(sunblind=self.sunblind, model=self.model)
 
     def create_buttons(self):
         # Setup Up and Down button
@@ -137,6 +143,11 @@ class SunblindView:
         einstellungen = Button(self.control_frame, text="Settings...", image=einstellungen_image, command=self.sunblind.set_sunblind_settings)
         einstellungen.image = einstellungen_image
 
+        graph_path = r"Images/Graphs.gif"
+        graph_image = PhotoImage(file=graph_path).subsample(2)
+        graphbutton = Button(self.control_frame, text="Grafiek", image=graph_image, command=self.enable_live_data)
+        graphbutton.image = graph_image
+
         # Create action on Button press and release
         roll_up.bind('<ButtonPress-1>',     self.start_go_up)
         roll_up.bind('<ButtonRelease-1>',   self.stop_go_up)
@@ -146,6 +157,7 @@ class SunblindView:
         roll_up.pack()
         roll_down.pack()
         einstellungen.pack()
+        graphbutton.pack()
 
 
 

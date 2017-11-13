@@ -36,6 +36,17 @@ class MainView:
     def get_root(self):
         return root
 
+    def show_serials_button(self):
+        b1 = Button(self.function_frame_left, text="Show COM Ports", command=self.show_serials)
+        b1.grid(row=2, columnspan=2)
+
+    def show_serials(self):
+        row = 3
+        for i in self.model.serial_ports():
+            b1 = Button(self.function_frame_left, text=str(i), command= lambda: self.model.create_sunblind(root, i))
+            b1.grid(row=row, columnspan=2)
+            row = row + 1
+
     def setup_buttons_left(self):
         self.function_frame_left = Frame(root)
         self.add_sunblind_button()

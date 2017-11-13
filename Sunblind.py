@@ -16,7 +16,7 @@ class Sunblind:
 
     # Make some Class variables
     is_alive = False
-    com = 0
+    com = ""
 
     # ==========================================================
     # Constructor of this class
@@ -25,8 +25,12 @@ class Sunblind:
     # @param root the window where views has to attach to
     # ==========================================================
     def __init__(self, com, model, root):
-        self.max_roll_out = 160
-        self.min_roll_out = 0
+        self.output_dictionary = {"Afstand": 0, "Licht": 0, "Temperatuur": 0, "Min": 0, "Max": 0}
+        self.Afstand = 0
+        self.Licht = 0
+        self.Temperatuur = 0
+        self.Max = 160
+        self.Min = 0
         self.root = root
         self.is_alive = True
         self.rolling_down = False
@@ -34,21 +38,25 @@ class Sunblind:
         self.model = model
         self.com = com
         self.view = SunblindView(sunblind=self, model=model, root=root)
-        #self.serial = serial.Serial(com, 9600, timeout=.1)
-        print(com)
         self.start_reading()
         t1 = Thread(target=self.check_rolling, daemon=True)
         t1.start()
 
     def start_reading(self):
         if self.com != "test":
-            self.serial = serial.Serial(self.com, 9600, timeout=.1)
+            self.serial = serial.Serial(self.com, 9600, timeout=2, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS) #parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS
             t2 = Thread(target=self.getSerialData, daemon=True)
             t2.start()
         else:
             pass
 
     def delete_view(self):
+        if self.com != "test":
+            try:
+                pass
+                self.serial.close()
+            except:
+                print("Failed to close COM-Connection")
         self.view.delete_view()
 
     # Open a settings window
@@ -82,12 +90,18 @@ class Sunblind:
     # Write some things to Arduino
     # @param what what vaiable we want to write, kind a case function
     # @val what value we want to write
-    def write_roll_to_arduino(self, what, val):
+    def write_roll_to_arduino(self, what, val=None):
         sleep(1)
         if what == min:
-            self.serial.write("SETMIN" + val)
+            self.serial.write(("I" + val+"X").encode())
         elif what == max:
-            self.serial.write("SETMAX" + val)
+            self.serial.write(("I" + val+"Z").encode())
+        elif what == "up":
+            self.serial.write(("B").encode())
+        elif what == "down":
+            self.serial.write(("F").encode())
+        elif what == "stop":
+            self.serial.write(("S").encode())
 
     # Some useless print method
     def unroll(self):
@@ -97,31 +111,41 @@ class Sunblind:
     def roll_up(self):
         print("Roll Up")
 
+    def set_values(self):
+        self.min_roll_out = self.dictionary["Min"]
+        self.max_roll_out = self.dictionary["Max"]
+
     # Second threading method
     # Here we're reading the data send from the Arduino
     def getSerialData(self):
-        ser = serial.Serial(self.com, 9600, timeout=1)
         lastval = ""
         last = ""
         sensor_name = ""
-        output_dictionary = {}
-        output_dictionary['Poort'] = self.com
-        while True:
-            data = ser.read()
-            data = str(data, 'utf-8')
-            if (data is "L" or data is "C" or data is "D"):
-                last = data
-            elif (data is "X"):
-                if (last is "D"):
-                    sensor_name = "Afstand"
-                elif (last is "L"):
-                    sensor_name = "Licht"
-                elif (last is "C"):
-                    sensor_name = "Temperatuur"
-                    # print(sensor_name, lastval)
-                output_dictionary[sensor_name] = int(lastval)
-                print(output_dictionary)
-                lastval = ""
-            else:
-                lastval += data.rstrip()
-            #print(output_dictionary)
+        self.output_dictionary['Poort'] = self.com
+        print(self.output_dictionary)
+        while self.is_alive:
+            try:
+                data = self.serial.read()
+                data = str(data, 'utf-8')
+                #print(data)
+                if (data is "L" or data is "C" or data is "D" or data is "M" or data is "U"):
+                    last = data
+                elif (data is "X"):
+                    if (last is "D"):
+                        sensor_name = "Afstand"
+                    elif (last is "L"):
+                        sensor_name = "Licht"
+                    elif (last is "C"):
+                        sensor_name = "Temperatuur"
+                    elif (last is "M"):
+                        sensor_name = "Min"
+                    elif (last is "U"):
+                        sensor_name = "Max"
+                    self.output_dictionary[sensor_name] = int(lastval)
+                    lastval = ""
+                else:
+                    lastval += data.rstrip()
+                self.set_values()
+            except Exception:
+                pass
+            print(self.output_dictionary)
