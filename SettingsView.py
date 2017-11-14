@@ -37,8 +37,8 @@ class SettingsView:
         b1.grid(row=2, column=1)
 
     def save(self):
-        valuemax = self.e1.get()
-        valuemin = self.e2.get()
+        valuemax = self.e1.get() / 10
+        valuemin = self.e2.get() / 10
         try:
             self.sunblind.max_roll_out = int(valuemax)
             self.sunblind.min_roll_out = int(valuemin)

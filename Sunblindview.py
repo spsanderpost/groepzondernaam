@@ -17,6 +17,7 @@ class SunblindView:
         self.root = root
         self.model = model
         self.sunblind = sunblind
+        self.graphview = ""
         self.return_frame = Frame(master=self.root, relief=RAISED, bd=2)
         self.main_frame = Frame(master=self.return_frame)
         self.main_frame.pack(side=LEFT)
@@ -24,6 +25,7 @@ class SunblindView:
         self.control_frame.pack(side=RIGHT)
         self.create_buttons()
         self.give_me_leds()
+        self.draw_canvas()
         #self.canvas = Canvas(self.main_frame, width=110, height=170, relief=SUNKEN, bd=1)
         #self.canvas.grid(column=4,row=0)
         self.return_frame.pack(side=BOTTOM, fill=X, expand=YES)
@@ -32,7 +34,7 @@ class SunblindView:
         self.return_frame.forget()
 
     def draw_canvas(self):
-        self.canvas = Canvas(self.main_frame, width=110, height=self.sunblind.output_dictionary["Max"], relief=SUNKEN, bd=1)
+        self.canvas = Canvas(self.main_frame, width=110, height=self.sunblind.max_roll_out + 10, relief=SUNKEN, bd=1)
         self.canvas.grid(column=4,row=0)
 
     # Draw a virtual sunscreen in a window
@@ -117,6 +119,8 @@ class SunblindView:
     def stop_go_up(self, event):
         self.sunblind.rolling_up = False
         self.off_status_light()
+        if self.sunblind.com != "test":
+            self.sunblind.write_roll_to_arduino("stop")
 
     def start_go_down(self, event):
         self.sunblind.rolling_down = True
@@ -125,6 +129,9 @@ class SunblindView:
     def stop_go_down(self, event):
         self.sunblind.rolling_down = False
         self.off_status_light()
+        if self.sunblind.com != "test":
+            self.sunblind.write_roll_to_arduino("stop")
+
     def enable_live_data(self):
         self.graphview = GraphView(sunblind=self.sunblind, model=self.model)
 

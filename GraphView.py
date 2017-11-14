@@ -42,15 +42,12 @@ class GraphView:
         self.show_livedata = Button(self.root,text="Show live data",command=lambda:self.live_data_window()).pack(side=LEFT)
         #close button
         self.close_button = Button(self.root, text='Close Window', command=lambda: self.close()).pack(side=LEFT)
-        try:
-            self.step()
-        except Exception:
-            pass
+
+        self.step()
 
     def step(self):
         #Execute once every second, updates the graph and the infoframe
-        self.tempvalue = int(self.sunblind.dictionary["Temperatuur"])
-        print(self.tempvalue)
+        self.tempvalue = self.sunblind.output_dictionary["Temperatuur"]
         if self.temp_graph:
             if self.s == 16:
                 # new frame
@@ -65,7 +62,7 @@ class GraphView:
             self.s = self.s+1
 
 
-        self.distancevalue = int(self.sunblind.dictionary["Afstand"])
+        self.distancevalue = self.sunblind.output_dictionary["Afstand"]
         if self.distance_graph:
             if self.ds == 16:
                 # new frame
@@ -73,7 +70,7 @@ class GraphView:
                 self.xx2 = 50
                 self.distance_canvas.delete('temp_distance')
             xx1 = self.xx2
-            yy1 = self.yy2 #Afstand:
+            yy1 = self.yy2
             self.xx2 = 50 + self.ds*50
             self.yy2 = 550 - 5 * self.distancevalue
             self.distance_canvas.create_line(xx1, yy1, self.xx2, self.yy2, fill='red', tags='temp_distance')
@@ -82,8 +79,8 @@ class GraphView:
 
         if self.livedata:
             #update InfoCanvas-Dynamic
-            self.infocanvas.create_window(70, 80,window=Label(self.infocanvas, text="Current temperature = %d" % (self.tempvalue)))
-            self.infocanvas.create_window(60, 100, window=Label(self.infocanvas,text="Current distance = %d" % (self.distancevalue)))
+            self.infocanvas.create_window(70, 80,window=Label(self.infocanvas, text="Current temperature = %d" % (self.tempvalue / 2)))
+            self.infocanvas.create_window(60, 100, window=Label(self.infocanvas,text="Current distance = %d" % (self.distancevalue / 2)))
             self.infocanvas.create_window(58, 120, window=Label(self.infocanvas, text="Runtime: %s" % (self.minutes)+" m : %d "%(self.seconds)+"s"))
 
         self.seconds = self.seconds + 1
@@ -129,7 +126,7 @@ class GraphView:
         for i in range(11):
             y = 550 - (i * 50)
             self.canvas.create_line(50,y,800,y, width=1, dash=(2,5))
-            self.canvas.create_text(40,y, text='%d'% (i*10), anchor=E)
+            self.canvas.create_text(40,y, text='%d'% (i*10/2), anchor=E)
 
         self.delete_temp = Button(self.canvas, text="X",fg='red', command=lambda: self.delete_canvas())
         self.canvas.create_window(550,25, window=self.delete_temp)
@@ -172,7 +169,7 @@ class GraphView:
         for i in range(11):
             y = 550 - (i * 50)
             self.distance_canvas.create_line(50,y,800,y, width=1, dash=(2,5))
-            self.distance_canvas.create_text(40,y, text='%d'% (i*10), anchor=E)
+            self.distance_canvas.create_text(40,y, text='%d'% (i*10/2), anchor=E)
 
         self.delete_distance = Button(self.distance_canvas, text="X",fg='red', command=self.delete_distancecanvas)
         self.distance_canvas.create_window(550, 25, window=self.delete_distance)
@@ -206,5 +203,6 @@ class GraphView:
 
     def close(self):
         self.root.destroy()
+
 
 

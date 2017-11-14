@@ -26,11 +26,8 @@ class Sunblind:
     # ==========================================================
     def __init__(self, com, model, root):
         self.output_dictionary = {"Afstand": 0, "Licht": 0, "Temperatuur": 0, "Min": 0, "Max": 0}
-        self.Afstand = 0
-        self.Licht = 0
-        self.Temperatuur = 0
-        self.Max = 160
-        self.Min = 0
+        self.max_roll_out = 160
+        self.min_roll_out = 0
         self.root = root
         self.is_alive = True
         self.rolling_down = False
@@ -68,18 +65,21 @@ class Sunblind:
     def check_rolling(self):
         initial_roll_out = i = 0
         while self.is_alive == True:
-
             if self.rolling_up == True:
                 self.view.going_up(bool=True)
+                if self.com != "test":
+                    self.write_roll_to_arduino("up")
                 if i >= 10:
                     self.view.draw(i)
-                    i = i - 5
+                    i = i - 10
                 else:
                     pass
             elif self.rolling_down == True:
                 self.view.going_down(True)
+                if self.com != "test":
+                    self.write_roll_to_arduino("down")
                 if i <= self.max_roll_out:
-                    i += 5
+                    i += 10
                     self.view.draw(i)
                 else:
                     pass
@@ -97,7 +97,7 @@ class Sunblind:
         elif what == max:
             self.serial.write(("I" + val+"Z").encode())
         elif what == "up":
-            self.serial.write(("B").encode())
+            self.serial.write(("R").encode())
         elif what == "down":
             self.serial.write(("F").encode())
         elif what == "stop":
@@ -112,8 +112,8 @@ class Sunblind:
         print("Roll Up")
 
     def set_values(self):
-        self.min_roll_out = self.dictionary["Min"]
-        self.max_roll_out = self.dictionary["Max"]
+        self.min_roll_out = self.output_dictionary["Min"]
+        self.max_roll_out = self.output_dictionary["Max"]
 
     # Second threading method
     # Here we're reading the data send from the Arduino
@@ -149,3 +149,4 @@ class Sunblind:
             except Exception:
                 pass
             print(self.output_dictionary)
+            # self.view.draw_canvas()

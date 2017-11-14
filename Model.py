@@ -34,7 +34,7 @@ class Model:
     def com_check(self):
         #self.create_sunblind(root=root, com="/dev/tty.usbmodem1411")
         while True:
-            if sys.platform.startswith('win'):
+            if sys.platform.startswith('bla'):
                 current = self.serial_ports()
                 for i in current:
                     if i not in self.com_list:
@@ -112,7 +112,7 @@ class Model:
         """
         if sys.platform.startswith('win'):
             pass
-            # ports = ['COM%s' % (i + 1) for i in range(256)]
+            ports = ['COM%s' % (i + 1) for i in range(256)]
         elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
             # this excludes your current terminal "/dev/tty"
             ports = glob.glob('/dev/tty[A-Za-z]*')
